@@ -3,19 +3,37 @@ import PyPDF2
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import fire
 import fitz
+import collections
 
 
 class PDFSplitter(object):
+
+    def check_duplicate(self,inputallplansdir):
+
+        list_all_pdf = []
+        a=0
+        for dirpath, dirnames, filenames in os.walk(inputallplansdir):
+            for file in filenames:
+                if file.endswith(".pdf"):
+                    a+=1
+                    print(a,file)
+                    list_all_pdf.append(file)
+        
+        check_list_all_pdf = ([item for item, count in collections.Counter(list_all_pdf).items() if count > 1])
+        print(check_list_all_pdf)
+
 
     def split_pdf(self,inputdir,outputdir):
 
         # inputdir = "/mnt/c/development/Brisbane_POC/Test"
         # outputdir = "/mnt/c/development/Brisbane_POC/Test_split"
+        a=0
         os.makedirs(outputdir, exist_ok=True)
         for dirpath, dirnames, filenames in os.walk(inputdir):
             for file in filenames:
                 if file.endswith(".pdf"):
-                    print(file)
+                    a+=1
+                    print(a,file)
                     filename = os.path.join(dirpath,file)
                     inputpdf = PdfFileReader(open(filename, "rb"),strict=False)
 
